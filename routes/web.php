@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () { return view('welcome');});
+Route::get('table', 'TableController@index');
+Route::get('tariffs', 'TableTariffsController@index');
+Route::get('/', 'TableTariffsController@index');
+
