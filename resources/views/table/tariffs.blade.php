@@ -1,15 +1,8 @@
     @include('table.nav')
     <?php $cols = [
-//        'section_id', 'mobile_tariff_type_id',
-        'title',
-        'slug',
-//        'content',
-//        'locale',
-        'transl_group_id',
+        'section_id','mobile_tariff_type_id','title','slug','content','locale','transl_group_id',
 
-        'featured',
-        'recommended',
-        'subscription_fee', 'tariff_fee', 'tariff_fee_period',
+        'featured','recommended', 'subscription_fee', 'tariff_fee', 'tariff_fee_period',
         'outgoing_calls_price', 'outgoing_calls_within_network_price', 'outgoing_calls_within_tariff_plan_price',
         'outgoing_calls_within_сorporate_group_price', 'outgoing_international_calls_price',
         'outgoing_calls_included_limit', 'outgoing_calls_included_limit_period',
@@ -22,27 +15,35 @@
         'ziyonet_and_internet_speed', 'ziyonet_traffic_limit',
         'activate_ussd_command', 'activate_sms_label', 'activate_sms_command', 'activate_personal_account_link',
 
-        'status', 'sort', 'old_parameters', 'activation_business_mobile',
-        'esb_id', 'group_id' ,'unit',
-        ];
+        'status', 'sort', 'created_at', 'updated_at', 'old_parameters',
+        'esb_id',
+        'activation_business_mobile', 'unit', 'group_id'
+        ]; ///err not null - esb_id ; old_parameters ; slug
     ?>
     <table>
         <thead>
         <tr>
-            @for($i=0;$i<3;$i++)
-            <th> {{$cols[$i]}}</th>
-            @endfor
-            <th>JsonB</th>
+            @foreach([0,1,2,3,5,6,40,41,42,43,45,46,47,48] as $iname)
+                <th> {{$cols[$iname]}} </th>
+            @endforeach
+            <th>JsonBin</th>
         </tr>
         </thead>
         <tbody>
+<?php       if($ins) $data = array();
+//        ['name' => 'John', 'age' => 25],
+//        ['name' => 'Maria', 'age' => 31],
+//            DB::table('table_name')->insert($data);
+?>
         @foreach($table as $row)
+<?php       if($ins) $arritem = array() ?>
             <tr>
-                <td> {{$row->title}} </td>
-                <td> {{$row->slug}} </td>
-                <td> {{$row->transl_group_id}} </td>
+                @foreach([0,1,2,3,5,6,40,41,42,43,45,46,47,48] as $iname)
+                    <td> {{$row->{$cols[$iname]} }} </td>
+                    <?php if($ins) $arritem [$cols[$iname]] = $row->{$cols[$iname]}; ?>
+                @endforeach
                 <td>
-                <?php
+                <?php  //+ 4 + 44 + jsonbin
                     $str="{";
                 if ($row->featured) $str.=" \"featured\":$row->featured,";
                 if ($row->recommended) $str.=" \"recommended\":$row->recommended,";
@@ -88,8 +89,20 @@ if ($row->activate_personal_account_link) $str.=" \"activate_personal_account_li
                     {{$str}}
                 </td>
             </tr>
+            <?php
+            if($ins) {
+                $arritem [$cols[4]] = $row->{$cols[4]};
+                $arritem [$cols[44]] = $row->{$cols[44]};
+                $arritem ['jsonbin'] = $str;
+            }
+            $data [] = $arritem;
+            ?>
         @endforeach
         </tbody>
     </table></blockquote>
+    <?php
+//    dd($data);die();
+    if($ins) $DBnew->table('mobile_tariff_json')->insert($data);
+    ?>
     </body>
 </html>

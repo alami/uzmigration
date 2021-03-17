@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 //Route::get('/', function () { return view('welcome');});
 Route::get('table', 'TableController@index');
-Route::get('tariffs', 'TableTariffsController@index');
+
 Route::get('/', 'TableTariffsController@index');
+Route::get('tariffs', 'TableTariffsController@index');
+Route::get('new', 'TableTariffsController@new');
+Route::get('ins', 'TableTariffsController@ins');
 
